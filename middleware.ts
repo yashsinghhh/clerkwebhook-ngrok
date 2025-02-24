@@ -5,6 +5,8 @@ import { NextResponse } from 'next/server';
 const isProtectedRoute = createRouteMatcher([
   '/'  // protect home page
 
+//   '/profile/edit(.*)',  // protect profile edit page
+
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
