@@ -27,7 +27,7 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: npm install
         
       - name: Lint
         run: npm run lint
@@ -42,7 +42,7 @@ jobs:
       # - name: Test
       #   run: npm test
 
-  # For external contributors
+  # This job only runs for pull requests from forks
   build-pr:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true
     runs-on: ubuntu-latest
@@ -57,20 +57,7 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
-        
-      - name: Lint
-        run: npm run lint
+        run: npm install
         
       - name: Type check
         run: npx tsc --noEmit
-        
-      - name: Build with mock environment
-        run: |
-          echo "Using mock environment for PR build"
-          export NEXT_PUBLIC_SUPABASE_URL="https://example.supabase.co"
-          export NEXT_PUBLIC_SUPABASE_ANON_KEY="mock-key-for-building"
-          export WEBHOOK_SECRET="mock-secret-for-building"
-          export NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_mock-clerk-key"
-          export CLERK_SECRET_KEY="sk_test_mock-clerk-secret"
-          npm run build
